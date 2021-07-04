@@ -1,3 +1,9 @@
+if exists('g:loaded_unpac')
+  finish
+endif
+
+let g:loaded_unpac = 1
+
 let s:minpac_init = 0
 
 function! unpac#init(...) abort
