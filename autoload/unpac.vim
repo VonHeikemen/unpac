@@ -63,7 +63,11 @@ function! unpac#add(repo, ...) abort
 
   if get(l:opts, 'type', 'init') == 'init'
     let l:opts['type'] = 'opt'
-    execute printf('packadd %s', l:plug_name)
+    try
+      execute printf('packadd %s', l:plug_name)
+    catch
+      echom printf('%s is not installed', l:plug_name)
+    endtry
   endif
 
   let s:repos[a:repo] = l:opts
