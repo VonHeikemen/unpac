@@ -70,6 +70,10 @@ function! unpac#add(repo, ...) abort
     endtry
   endif
 
+  if has_key(l:opts, 'do')
+    let l:opts['do'] = function('s:update_hook', [l:opts['do']])
+  endif
+
   let s:repos[a:repo] = l:opts
 endfunction
 
@@ -89,22 +93,29 @@ function! unpac#status() abort
 endfunction
 
 function! s:begin() abort
-  if s:minpac_init
-    return
-  endif
-
   packadd minpac
 
   call minpac#init(s:minpac_opts)
   for [repo, opts] in items(s:repos)
     call minpac#add(repo, opts)
   endfor
-
-  let s:minpac_init = 1
 endfunction
 
 function! s:do_cmd(cmd, bang, start, end, args)
   exec printf('%s%s%s %s', (a:start == a:end ? '' : (a:start.','.a:end)), a:cmd, a:bang, a:args)
+endfunction
+
+function! s:update_hook(hook, hooktype, name) abort
+  execute printf('packadd %s', a:name)
+  try
+    if type(a:hook) == v:t_func
+      call call(a:hook, [a:hooktype, a:name])
+    elseif type(a:hook) == v:t_string
+      execute a:hook
+    endif
+  catch
+    echom printf('error in %s hook of %s', a:hooktype, a:name)
+  endtry
 endfunction
 
 command! -bar -nargs=+ Pack call unpac#add(<args>)
