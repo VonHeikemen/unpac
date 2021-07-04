@@ -110,12 +110,9 @@ Register a plugin.
 
 `{config}` is a dictionary that takes everything [minpac#add](https://github.com/k-takata/minpac#minpacaddurl-config) might need plus a few option I have added.
 
-* **type**
-
-Now takes a new option called `init` which is the default value. This will cause the plugin to be installed in the `pack/minpac/opt` folder, but will load the plugin immediately using the built-in command `packadd`. This is to allow the user to choose the order in which the plugins are going to be loaded during vim's initialization process.
-
 | **Option**  | **Description** |
 | --- | --- |
+| `type` | Now takes a new option called `init` which is the default value. This will cause the plugin to be installed in the `pack/minpac/opt` folder, but will load the plugin immediately using the built-in command `packadd`. This is to allow the user to choose the order in which the plugins are going to be loaded during vim's initialization process. |
 | `for` | It will create an `autocommand` that'll load the plugin when you enter a buffer of the given filetype. Uses the built-in function `packadd` to load the plugin. |
 | `command` | It makes sure to execute `packadd {plugin-name}` before calling the given command. |
 | `event` | Execute `packadd {plugin-name}` when the given event (or list of events) is triggered. For a complete list of events see [:help autocmd-events](https://vimhelp.org/autocmd.txt.html#autocmd-events). |
